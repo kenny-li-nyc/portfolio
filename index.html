@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenny Li — Senior Windows Infrastructure Engineer</title>
+<meta name="description" content="Portfolio of Kenny Li, Senior Windows Infrastructure Engineer — Active Directory, Citrix, VMware, and automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+
+<div class="titlebar">
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle file explorer" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+  </button>
+  <div class="titlebar-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+  <span class="titlebar-label">kenny-li — portfolio</span>
+</div>
+
+<div class="workbench">
+
+  <nav class="sidebar" id="sidebar" aria-label="File explorer">
+    <p class="sidebar-heading">explorer</p>
+    <ul class="file-tree" role="tree">
+      <li class="file-item" data-file="readme" role="treeitem" tabindex="0">
+        <svg class="file-icon icon-md" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 11h6M9 14h6M9 17h4" stroke="currentColor" stroke-width="1.5"/></svg>
+        README.md
+      </li>
+      <li class="folder-item" aria-hidden="true">
+        <svg class="chevron" viewBox="0 0 24 24" width="12" height="12"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <svg class="file-icon icon-folder" viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v11H3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        automation
+      </li>
+      <li class="file-item indent" data-file="ad" role="treeitem" tabindex="0">
+        <svg class="file-icon icon-md" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 11h6M9 14h6M9 17h4" stroke="currentColor" stroke-width="1.5"/></svg>
+        ad-provisioning.md
+      </li>
+      <li class="file-item indent" data-file="cert" role="treeitem" tabindex="0">
+        <svg class="file-icon icon-md" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 11h6M9 14h6M9 17h4" stroke="currentColor" stroke-width="1.5"/></svg>
+        cert-renewal.md
+      </li>
+      <li class="file-item" data-file="skills" role="treeitem" tabindex="0">
+        <svg class="file-icon icon-json" viewBox="0 0 24 24"><path d="M8 3c-2 0-3 1-3 3v3c0 1-1 2-2 2 1 0 2 1 2 2v3c0 2 1 3 3 3M16 3c2 0 3 1 3 3v3c0 1 1 2 2 2-1 0-2 1-2 2v3c0 2-1 3-3 3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        skills.json
+      </li>
+      <li class="file-item" data-file="resume" role="treeitem" tabindex="0">
+        <svg class="file-icon icon-pdf" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        resume.pdf
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <a href="https://github.com/kenny-li-nyc" target="_blank" rel="noopener" aria-label="GitHub profile">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 .5C5.7.5.5 5.7.5 12c0 5 3.2 9.2 7.7 10.7.6.1.8-.3.8-.6v-2.1c-3.1.7-3.8-1.5-3.8-1.5-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.1 1.2.9-.2 1.9-.4 2.9-.4s2 .1 2.9.4c2.1-1.4 3.1-1.2 3.1-1.2.6 1.7.2 2.9.1 3.2.7.8 1.1 1.8 1.1 3 0 4.3-2.6 5.2-5.1 5.5.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.5-1.5 7.7-5.7 7.7-10.7C23.5 5.7 18.3.5 12 .5z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/kenny-li-nyc" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.5-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4A2 2 0 1 1 5.3 3.4a2 2 0 0 1 0 4zM7 20.4H3.6V9H7z"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <main class="editor-area">
+    <div class="cmdbar">
+      <label class="cmd-prompt" for="cmdInput">PS C:\Portfolio&gt;</label>
+      <input
+        type="text"
+        id="cmdInput"
+        class="cmd-input"
+        placeholder="type a command — try 'help'"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Command input — type a command such as get-resume and press Enter"
+      >
+      <span id="cmdFeedback" class="cmd-feedback" aria-live="polite"></span>
+    </div>
+    <div class="tabbar" id="tabbar" role="tablist"></div>
+    <div class="editor-pane" id="editorPane" tabindex="0"></div>
+    <div class="statusbar">
+      <span class="status-item">
+        <svg viewBox="0 0 24 24" width="13" height="13"><path d="M6 3v18M6 3l8 4-8 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        main
+      </span>
+      <span class="status-item">windows infrastructure</span>
+      <span class="status-item status-right">UTF-8</span>
+      <span class="status-item">Ln 1, Col 1</span>
+    </div>
+  </main>
+
+</div>
+
+<script src="./assets/script.js"></script>
+</body>
+</html>
