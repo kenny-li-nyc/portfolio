@@ -26,9 +26,8 @@ const automationData = {
     ],
     metrics: [
       { label: 'servers covered', value: '7,000+' },
-      { label: 'manual cleanup effort', value: 'Largely automated' },
-      { label: 'execution model', value: 'Local System (reduced credential exposure)' },
-      { label: 'patching reliability', value: 'Improved through proactive cleanup' }
+      { label: 'manual cleanup', value: '↓ significantly' },
+      { label: 'patching reliability', value: '↑ improved' }
     ]
   },
   hp: {
@@ -53,10 +52,9 @@ const automationData = {
       'End-to-end hardware failure workflow initiated without manual discovery'
     ],
     metrics: [
-      { label: 'failure detection method', value: 'Automated telemetry vs manual walkthrough discovery' },
-      { label: 'ticket creation latency', value: 'Near real-time vs delayed detection cycles' },
-      { label: 'risk reduction', value: 'Earlier identification of predictive disk failures' },
-      { label: 'operational coverage', value: 'HPE iLO / enterprise server fleet' }
+      { label: 'failure detection', value: '🔍 automated telemetry' },
+      { label: 'ticket latency', value: '⚡ near real-time' },
+      { label: 'risk reduction', value: '🛡 earlier detection' }
     ]
   }
 };
