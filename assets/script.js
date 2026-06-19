@@ -4,6 +4,53 @@
 // file in the sidebar.
 // ---------------------------------------------------------------------------
 
+const automationData = {
+  ad: {
+    title: 'New hire account provisioning',
+    beforeLabel: 'Manual provisioning across AD, Exchange, and Citrix — roughly 12 steps per new hire, done by hand from an HR ticket.',
+    afterLabel: 'One trigger from the HR ticketing system kicks off a script that creates the AD object, mailbox, group memberships, and Citrix entitlement, then logs the change automatically.',
+    beforeSteps: [
+      'Receive HR ticket',
+      'Create AD user object',
+      'Assign group memberships',
+      'Provision Exchange mailbox',
+      'Configure Citrix entitlement',
+      'Update documentation'
+    ],
+    afterSteps: [
+      'HR system triggers webhook',
+      'Script validates identity',
+      'Automated provisioning runs',
+      'Logs updated in system'
+    ],
+    metrics: [
+      { label: 'time per request', value: '45 min &rarr; 3 min' },
+      { label: 'manual steps', value: '12 &rarr; 1' },
+      { label: 'errors since rollout', value: '0' }
+    ]
+  },
+  cert: {
+    title: 'Certificate expiry monitoring',
+    beforeLabel: 'Certificate expirations were tracked in a spreadsheet. Two outages in one year traced back to renewals that slipped through.',
+    afterLabel: 'An automated job scans certificate stores and sends alerts at 30/14/7 days out, with an escalation if nothing\'s acted on.',
+    beforeSteps: [
+      'Track certs in spreadsheet',
+      'Manual review of expiry dates',
+      'Email reminders sent manually',
+      'Risk of human error'
+    ],
+    afterSteps: [
+      'Automated scan of cert stores',
+      'Alerts sent at 30/14/7 days',
+      'Escalation if no action taken'
+    ],
+    metrics: [
+      { label: 'missed renewals', value: '0' },
+      { label: 'lead time', value: '30 days' }
+    ]
+  }
+};
+
 const files = {
   readme: {
     label: 'README.md',
@@ -32,43 +79,8 @@ const files = {
     `
   },
 
-  ad: {
-    label: 'ad-provisioning.md',
-    body: `
-      <h2>New hire account provisioning</h2>
-      <p><span class="doc-comment">## before</span></p>
-      <p>Manual provisioning across AD, Exchange, and Citrix — roughly 12 steps
-      per new hire, done by hand from an HR ticket.</p>
-      <p><span class="doc-comment">## after</span></p>
-      <p>One trigger from the HR ticketing system kicks off a script that
-      creates the AD object, mailbox, group memberships, and Citrix
-      entitlement, then logs the change automatically.</p>
-      <div class="metric-row">
-        <div class="metric-card"><p class="label">time per request</p><p class="value">45 min &rarr; 3 min</p></div>
-        <div class="metric-card"><p class="label">manual steps</p><p class="value">12 &rarr; 1</p></div>
-        <div class="metric-card"><p class="label">errors since rollout</p><p class="value">0</p></div>
-      </div>
-      <p><span class="doc-comment">&lt;!-- TODO: replace metrics above with your real numbers --&gt;</span></p>
-    `
-  },
-
-  cert: {
-    label: 'cert-renewal.md',
-    body: `
-      <h2>Certificate expiry monitoring</h2>
-      <p><span class="doc-comment">## before</span></p>
-      <p>Certificate expirations were tracked in a spreadsheet. Two outages in
-      one year traced back to renewals that slipped through.</p>
-      <p><span class="doc-comment">## after</span></p>
-      <p>An automated job scans certificate stores and sends alerts at
-      30/14/7 days out, with an escalation if nothing's acted on.</p>
-      <div class="metric-row">
-        <div class="metric-card"><p class="label">missed renewals since rollout</p><p class="value">0</p></div>
-        <div class="metric-card"><p class="label">lead time before expiry</p><p class="value">30 days</p></div>
-      </div>
-      <p><span class="doc-comment">&lt;!-- TODO: replace with your real before/after project --&gt;</span></p>
-    `
-  },
+  ad: { label: 'ad-provisioning.md', isAutomation: true, key: 'ad' },
+  cert: { label: 'cert-renewal.md', isAutomation: true, key: 'cert' },
 
   skills: {
     label: 'skills.json',
@@ -151,6 +163,50 @@ function renderSkillsContent() {
   `;
 }
 
+function renderAutomationContent(key) {
+  const d = automationData[key];
+  const beforeRows = d.beforeSteps.map((s, i) => `
+    <div class="before-step">
+      <span class="before-step-num">${i + 1}</span><span>${s}</span>
+    </div>
+  `).join('');
+  const afterRows = d.afterSteps.map((s, i) => `
+    ${i > 0 ? '<div class="after-arrow">&darr;</div>' : ''}
+    <div class="after-step"><span>${s}</span></div>
+  `).join('');
+  const metricsHtml = d.metrics.map(m => `
+    <div class="metric-card"><p class="label">${m.label}</p><p class="value">${m.value}</p></div>
+  `).join('');
+  return `
+    <h2>${d.title}</h2>
+    <div class="automation-toggle">
+      <button class="toggle-btn active" data-view="before">Before</button>
+      <button class="toggle-btn" data-view="after">After</button>
+    </div>
+    <p class="doc-comment automation-caption" data-view="before">${d.beforeLabel}</p>
+    <p class="doc-comment automation-caption" data-view="after" style="display:none;">${d.afterLabel}</p>
+    <div class="before-list" data-view="before">${beforeRows}</div>
+    <div class="after-flow" data-view="after" style="display:none;">${afterRows}</div>
+    <div class="metric-row">${metricsHtml}</div>
+  `;
+}
+
+function attachAutomationHandlers() {
+  document.querySelectorAll('.automation-toggle').forEach(toggle => {
+    const buttons = toggle.querySelectorAll('.toggle-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        buttons.forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('[data-view]').forEach(el => {
+          if (el.classList.contains('toggle-btn')) return;
+          el.style.display = el.dataset.view === view ? '' : 'none';
+        });
+      });
+    });
+  });
+}
+
 function renderResumeContent() {
   return `
     <h2>resume.pdf</h2>
@@ -168,6 +224,7 @@ function renderResumeContent() {
 function getFileHtml(id) {
   const f = files[id];
   if (f.isSkills) return renderSkillsContent();
+  if (f.isAutomation) return renderAutomationContent(f.key);
   if (f.isResume) return renderResumeContent();
   return f.body;
 }
@@ -217,6 +274,7 @@ function openFile(id) {
   renderSidebarActive();
   editorPane.innerHTML = getFileHtml(id);
   if (files[id].isSkills) attachSkillCardHandlers();
+  if (files[id].isAutomation) attachAutomationHandlers();
   if (window.innerWidth <= 760) closeSidebar();
 }
 
@@ -229,6 +287,7 @@ function closeTab(id) {
       renderSidebarActive();
       editorPane.innerHTML = getFileHtml(activeFile);
       if (files[activeFile].isSkills) attachSkillCardHandlers();
+      if (files[activeFile].isAutomation) attachAutomationHandlers();
       return;
     }
     editorPane.innerHTML = '';
