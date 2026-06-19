@@ -5,48 +5,58 @@
 // ---------------------------------------------------------------------------
 
 const automationData = {
-  ad: {
-    title: 'New hire account provisioning',
-    beforeLabel: 'Manual provisioning across AD, Exchange, and Citrix — roughly 12 steps per new hire, done by hand from an HR ticket.',
-    afterLabel: 'One trigger from the HR ticketing system kicks off a script that creates the AD object, mailbox, group memberships, and Citrix entitlement, then logs the change automatically.',
+  cdrivecleanup: {
+    title: 'Enterprise C: Drive Cleanup Automation',
+    beforeLabel: 'Disk space issues were handled reactively. Engineers investigated individual servers, identified removable files, performed cleanup manually, and retried failed patching activities.',
+    afterLabel: 'A distributed automation solution proactively maintains disk space across thousands of Windows servers by executing cleanup locally as Local System, eliminating the need for a privileged service account while reducing manual intervention and providing centralized reporting for operational visibility.',
     beforeSteps: [
-      'Receive HR ticket',
-      'Create AD user object',
-      'Assign group memberships',
-      'Provision Exchange mailbox',
-      'Configure Citrix entitlement',
-      'Update documentation'
+      'Disk space alert generated',
+      'Engineer investigates server',
+      'Identify cleanup candidates',
+      'Perform manual cleanup',
+      'Validate free space',
+      'Retry patching or maintenance activity'
     ],
     afterSteps: [
-      'HR system triggers webhook',
-      'Script validates identity',
-      'Automated provisioning runs',
-      'Logs updated in system'
+      'Scheduled task executes locally as Local System',
+      'Retention-based cleanup policies run automatically',
+      'Cleanup results forwarded to central reporting',
+      'Most servers remain patch-ready without intervention',
+      'Exception servers identified for targeted investigation'
     ],
     metrics: [
-      { label: 'time per request', value: '45 min &rarr; 3 min' },
-      { label: 'manual steps', value: '12 &rarr; 1' },
-      { label: 'errors since rollout', value: '0' }
+      { label: 'servers covered', value: '7,000+' },
+      { label: 'manual cleanup effort', value: 'Largely automated' },
+      { label: 'execution model', value: 'Local System (reduced credential exposure)' },
+      { label: 'patching reliability', value: 'Improved through proactive cleanup' }
     ]
   },
-  cert: {
-    title: 'Certificate expiry monitoring',
-    beforeLabel: 'Certificate expirations were tracked in a spreadsheet. Two outages in one year traced back to renewals that slipped through.',
-    afterLabel: 'An automated job scans certificate stores and sends alerts at 30/14/7 days out, with an escalation if nothing\'s acted on.',
+  hp: {
+    title: 'HPE iLO / IML Hardware Failure Detection Automation',
+    beforeLabel: 'Hardware failure signals were inconsistently detected through monitoring tools or discovered manually during data center walkthroughs, sometimes after predictive disk warnings had already progressed to active failure conditions.',
+    afterLabel: 'A read-only automation framework continuously collects HPE iLO Integrated Management Log (IML) telemetry via Redfish API, evaluates hardware health signals, and automatically triggers ServiceNow workflows when failure risk or telemetry issues are detected.',
     beforeSteps: [
-      'Track certs in spreadsheet',
-      'Manual review of expiry dates',
-      'Email reminders sent manually',
-      'Risk of human error'
+      'Hardware health alerts inconsistent or delayed',
+      'Predictive disk failures sometimes missed in monitoring systems',
+      'Issues discovered during manual data center walkthroughs',
+      'Manual investigation initiated after discovery',
+      'ServiceNow ticket created manually',
+      'Change and remediation process started after delay'
     ],
     afterSteps: [
-      'Automated scan of cert stores',
-      'Alerts sent at 30/14/7 days',
-      'Escalation if no action taken'
+      'Scheduled automation queries HPE iLO via Redfish API using read-only account',
+      'IML logs collected and parsed for hardware failure indicators',
+      'Disk predictive failure or telemetry issues detected automatically',
+      'ServiceNow RITM created with full diagnostic context',
+      'MAC change request generated in draft mode',
+      'Tickets assigned to server operations queue for remediation',
+      'End-to-end hardware failure workflow initiated without manual discovery'
     ],
     metrics: [
-      { label: 'missed renewals', value: '0' },
-      { label: 'lead time', value: '30 days' }
+      { label: 'failure detection method', value: 'Automated telemetry vs manual walkthrough discovery' },
+      { label: 'ticket creation latency', value: 'Near real-time vs delayed detection cycles' },
+      { label: 'risk reduction', value: 'Earlier identification of predictive disk failures' },
+      { label: 'operational coverage', value: 'HPE iLO / enterprise server fleet' }
     ]
   }
 };
@@ -55,7 +65,7 @@ const files = {
   readme: {
     label: 'README.md',
     body: `
-          <p class="doc-comment">PS C:\Portfolio&gt; <span class="doc-accent">whoami</span></p>
+          <p class="doc-comment">PS C:&#92;Portfolio&gt; <span class="doc-accent">whoami</span></p>
           <h1>Kenny Li</h1>
           <p>Senior Infrastructure Engineer</p>
           <p>I design, operate, and automate large-scale Windows environments for
@@ -66,21 +76,21 @@ const files = {
           the job is building systems that prevent problems, not just responding
           to them.</p>
           
-          <p class="doc-comment">PS C:\Portfolio&gt; <span class="doc-accent">Get-Current</span></p>
+          <p class="doc-comment">PS C:&#92;Portfolio&gt; <span class="doc-accent">Get-Current</span></p>
           <p>Currently exploring how Windows infrastructure intersects with security and
           identity boundaries, specifically, how AD, endpoint controls, and access management
           hold up at scale. <a href="https://kenny-li-nyc.github.io/endpoint-security-at-scale/index.html" target="_blank" rel="noopener">endpoint-security-at-scale</a>
           is where some of that exploration lives right now.</p>
           
-          <p class="doc-comment">PS C:\Portfolio&gt; <span class="doc-accent">Get-Help</span></p>
+          <p class="doc-comment">PS C:&#92;Portfolio&gt; <span class="doc-accent">Get-Help</span></p>
           <p>Use the file explorer on the left, or the command bar — type
           <code>help</code> for the full list, or jump straight to
           <code>Get-Skills</code> or <code>Get-Resume</code>.</p>
     `
   },
 
-  ad: { label: 'ad-provisioning.md', isAutomation: true, key: 'ad' },
-  cert: { label: 'cert-renewal.md', isAutomation: true, key: 'cert' },
+  cdrivecleanup: { label: 'Cdrive-Cleanup.md', isAutomation: true, key: 'cdrivecleanup' },
+  hp: { label: 'get-hpfailure.md', isAutomation: true, key: 'hp' },
 
   skills: {
     label: 'skills.json',
@@ -210,7 +220,7 @@ function attachAutomationHandlers() {
 function renderResumeContent() {
   return `
     <h2>resume.pdf</h2>
-    <p class="doc-comment">// one page, ATS-friendly, no gimmicks</p>
+    <p class="doc-comment"></p>
     <div class="resume-block">
       <iframe class="resume-frame" src="./assets/resume.pdf" title="Resume preview"></iframe>
       <a class="btn" href="./assets/resume.pdf" download>
@@ -312,9 +322,9 @@ const commandMap = {
   'get-skills': 'skills',
   'get-readme': 'readme',
   'get-about': 'readme',
-  'get-ad-provisioning': 'ad',
-  'get-cert-renewal': 'cert',
-  'get-automation': 'ad'
+  'get-cdrivecleanup': 'cdrivecleanup',
+  'get-hpfailure': 'hp',
+  'get-automation': 'cdrivecleanup'
 };
 
 const cmdInput = document.getElementById('cmdInput');
