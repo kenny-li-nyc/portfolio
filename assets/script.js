@@ -197,7 +197,7 @@ function renderAutomationContent(key) {
     <p class="doc-comment automation-caption" data-view="after" style="display:none;">${d.afterLabel}</p>
     <div class="before-list" data-view="before">${beforeRows}</div>
     <div class="after-flow" data-view="after" style="display:none;">${afterRows}</div>
-    <div class="metric-row">${metricsHtml}</div>
+    <div class="metric-row" data-view="after" style="display:none;">${metricsHtml}</div>
   `;
 }
 
