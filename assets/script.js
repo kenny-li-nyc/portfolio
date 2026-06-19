@@ -87,6 +87,40 @@ const files = {
     `
   },
 
+  help: {
+    label: 'help.txt',
+    body: `
+      <h2>Available Commands</h2>
+      <p class="doc-comment">// Type these into the command bar below and press Enter</p>
+      <table style="width: 100%; max-width: 600px; font-size: 14px; border-collapse: collapse; margin-top: 15px;">
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-ReadMe</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">Open the main about / intro page</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-Skills</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">View skills.json interactive matrix</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-CdriveCleanup</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">View C: Drive cleanup automation case study</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-HpFailure</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">View HPE iLO hardware detection telemetry</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-Resume</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">Open and download resume.pdf</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: var(--keyword); font-family: monospace;">Get-Help / help / ls / dir</td>
+          <td style="color: var(--text-secondary); padding-left: 15px;">Display this command manual</td>
+        </tr>
+      </table>
+    `
+  },
+
   cdrivecleanup: { label: 'Cdrive-Cleanup.md', isAutomation: true, key: 'cdrivecleanup' },
   hp: { label: 'get-hpfailure.md', isAutomation: true, key: 'hp' },
 
@@ -340,18 +374,23 @@ function runCommand(raw) {
   const cmd = raw.trim().toLowerCase();
   if (!cmd) return;
 
-  if (cmd === 'help' || cmd === 'ls' || cmd === 'get-help') {
-    showCmdFeedback('commands: ' + Object.keys(commandMap).join(', '), false);
+  // Intercept help system commands and open our virtual file
+  if (cmd === 'help' || cmd === 'ls' || cmd === 'dir' || cmd === 'get-help') {
+    openFile('help');
+    showCmdFeedback('Returned system help schema successfully.', false);
     return;
   }
 
+  // Handle mapped file commands
   if (commandMap[cmd]) {
-    openFile(commandMap[cmd]);
-    showCmdFeedback(`opened ${files[commandMap[cmd]].label}`, false);
+    const targetFileId = commandMap[cmd];
+    openFile(targetFileId);
+    showCmdFeedback(`Successfully initialized terminal view for: ${files[targetFileId].label}`, false);
     return;
   }
 
-  showCmdFeedback(`'${raw}' is not recognized. Type help for a list of commands.`, true);
+  // Gracefully catch unrecognized parameters
+  showCmdFeedback(`The term '${raw}' is not recognized as the name of a cmdlet or script. Type 'help' to see options.`, true);
 }
 
 cmdInput.addEventListener('keydown', (e) => {
