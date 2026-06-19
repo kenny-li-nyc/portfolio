@@ -7,6 +7,7 @@
 const automationData = {
   cdrivecleanup: {
     title: 'Enterprise C: Drive Cleanup Automation',
+    currentView: 'before',
     beforeLabel: 'Disk space issues were handled reactively. Engineers investigated individual servers, identified removable files, performed cleanup manually, and retried failed patching activities.',
     afterLabel: 'A distributed automation solution proactively maintains disk space across thousands of Windows servers by executing cleanup locally as Local System, eliminating the need for a privileged service account while reducing manual intervention and providing centralized reporting for operational visibility.',
     beforeSteps: [
@@ -32,6 +33,7 @@ const automationData = {
   },
   hp: {
     title: 'HPE iLO / IML Hardware Failure Detection Automation',
+    currentView: 'before',
     beforeLabel: 'Hardware failure signals were inconsistently detected through monitoring tools or discovered manually during data center walkthroughs, sometimes after predictive disk warnings had already progressed to active failure conditions.',
     afterLabel: 'A read-only automation framework continuously collects HPE iLO Integrated Management Log (IML) telemetry via Redfish API, evaluates hardware health signals, and automatically triggers ServiceNow workflows when failure risk or telemetry issues are detected.',
     beforeSteps: [
@@ -207,6 +209,8 @@ function renderSkillsContent() {
 
 function renderAutomationContent(key) {
   const d = automationData[key];
+  const view = d.currentView || 'before'; // Fallback to before if undefined
+
   const beforeRows = d.beforeSteps.map((s, i) => `
     <div class="before-step">
       <span class="before-step-num">${i + 1}</span><span>${s}</span>
@@ -219,17 +223,18 @@ function renderAutomationContent(key) {
   const metricsHtml = d.metrics.map(m => `
     <div class="metric-card"><p class="label">${m.label}</p><p class="value">${m.value}</p></div>
   `).join('');
+
   return `
     <h2>${d.title}</h2>
     <div class="automation-toggle">
-      <button class="toggle-btn active" data-view="before">Before</button>
-      <button class="toggle-btn" data-view="after">After</button>
+      <button class="toggle-btn ${view === 'before' ? 'active' : ''}" data-view="before">Before</button>
+      <button class="toggle-btn ${view === 'after' ? 'active' : ''}" data-view="after">After</button>
     </div>
-    <p class="doc-comment automation-caption" data-view="before">${d.beforeLabel}</p>
-    <p class="doc-comment automation-caption" data-view="after" style="display:none;">${d.afterLabel}</p>
-    <div class="before-list" data-view="before">${beforeRows}</div>
-    <div class="after-flow" data-view="after" style="display:none;">${afterRows}</div>
-    <div class="metric-row" data-view="after" style="display:none;">${metricsHtml}</div>
+    <p class="doc-comment automation-caption" data-view="before" style="${view === 'before' ? '' : 'display:none;'}">${d.beforeLabel}</p>
+    <p class="doc-comment automation-caption" data-view="after" style="${view === 'after' ? '' : 'display:none;'}">${d.afterLabel}</p>
+    <div class="before-list" data-view="before" style="${view === 'before' ? '' : 'display:none;'}">${beforeRows}</div>
+    <div class="after-flow" data-view="after" style="${view === 'after' ? '' : 'display:none;'}">${afterRows}</div>
+    <div class="metric-row" data-view="after" style="${view === 'after' ? '' : 'display:none;'}">${metricsHtml}</div>
   `;
 }
 
@@ -239,8 +244,16 @@ function attachAutomationHandlers() {
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         const view = btn.dataset.view;
+        
+        // CRITICAL FIX: Save the chosen view to the active file's data model
+        if (automationData[activeFile]) {
+          automationData[activeFile].currentView = view;
+        }
+
         buttons.forEach(b => b.classList.toggle('active', b === btn));
-        document.querySelectorAll('[data-view]').forEach(el => {
+        
+        // Toggle the visibility elements on the screen
+        toggle.parentElement.querySelectorAll('[data-view]').forEach(el => {
           if (el.classList.contains('toggle-btn')) return;
           el.style.display = el.dataset.view === view ? '' : 'none';
         });
@@ -321,19 +334,26 @@ function openFile(id) {
 }
 
 function closeTab(id) {
+  // 1. Remove the closed tab from our tracking array
   openTabs = openTabs.filter(t => t !== id);
+  
+  // 2. If the tab we just closed was the one currently on screen
   if (activeFile === id) {
+    // Set the active file to the last remaining open tab (or null if none are left)
     activeFile = openTabs[openTabs.length - 1] || null;
+    
+    // Update the main editor pane content right away
     if (activeFile) {
-      renderTabs();
-      renderSidebarActive();
       editorPane.innerHTML = getFileHtml(activeFile);
       if (files[activeFile].isSkills) attachSkillCardHandlers();
       if (files[activeFile].isAutomation) attachAutomationHandlers();
-      return;
+    } else {
+      editorPane.innerHTML = '';
     }
-    editorPane.innerHTML = '';
   }
+  
+  // 3. CRITICAL FIX: These always run now, perfectly updating the UI 
+  // whether you closed a background tab or the active tab!
   renderTabs();
   renderSidebarActive();
 }
