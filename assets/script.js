@@ -174,6 +174,14 @@ const plainTags = [
   'SRE', 'Copilot / ChatGPT / Claude', 'Github / Gitlab', 'Grafana'
 ];
 
+const certifications = [
+  { name: 'Azure Solutions Architect Expert', issuer: 'Microsoft', year: '2023' },
+  { name: 'Citrix Certified Professional, Virtualization (CCP-V)', issuer: 'Citrix', year: '2023' },
+  { name: 'Identity and Access Administrator Associate', issuer: 'Microsoft', year: '2023' },
+  { name: 'AWS Certified SysOps Administrator, Associate', issuer: 'Amazon Web Services', year: '2021' },
+  { name: 'Security, Compliance, and Identity Fundamentals', issuer: 'Microsoft', year: '2021' }
+];
+
 // ---------------------------------------------------------------------------
 // RENDERING — shouldn't need to touch this unless you're changing behavior.
 // ---------------------------------------------------------------------------
@@ -198,12 +206,24 @@ function renderSkillsContent() {
   `).join('');
 
   const tagsHtml = plainTags.map(t => `<span class="skill-tag">${t}</span>`).join('');
+  
+  const certsHtml = certifications.map(c => `
+    <div class="cert-badge">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l3 6 6 1-4.5 4.5L17.5 20 12 17l-5.5 3 1-6.5L3 9l6-1z"/></svg>
+      <div>
+        <p class="cert-name">${c.name}</p>
+        <p class="cert-issuer">${c.issuer} &middot; ${c.year}</p>
+      </div>
+    </div>
+  `).join('');
 
   return `
     <h2>skills.json</h2>
     <p class="doc-comment">// click a card to see why it matters at scale</p>
     <div class="skills-grid">${cardsHtml}</div>
     <div class="skill-tag-row">${tagsHtml}</div>
+    <p class="doc-comment" style="margin-top:1.5rem;">// certifications</p>
+    <div class="cert-row">${certsHtml}</div>
   `;
 }
 
