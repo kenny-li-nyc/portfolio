@@ -175,11 +175,11 @@ const plainTags = [
 ];
 
 const certifications = [
-  { name: 'Azure Solutions Architect Expert', issuer: 'Microsoft', year: '2023' },
-  { name: 'Citrix Certified Professional, Virtualization (CCP-V)', issuer: 'Citrix', year: '2023' },
-  { name: 'Identity and Access Administrator Associate', issuer: 'Microsoft', year: '2023' },
-  { name: 'AWS Certified SysOps Administrator, Associate', issuer: 'Amazon Web Services', year: '2021' },
-  { name: 'Security, Compliance, and Identity Fundamentals', issuer: 'Microsoft', year: '2021' }
+  { name: 'Azure Solutions Architect Expert', issuer: 'Microsoft', year: '2023', badge: './assets/azure.png' },
+  { name: 'Citrix Certified Professional, Virtualization (CCP-V)', issuer: 'Citrix', year: '2023', badge: './assets/ccp-v.png' },
+  { name: 'Identity and Access Administrator Associate', issuer: 'Microsoft', year: '2023', badge: './assets/identity.png' },
+  { name: 'AWS Certified SysOps Administrator, Associate', issuer: 'Amazon Web Services', year: '2021', badge: './assets/aws.png' },
+  { name: 'Security, Compliance, and Identity Fundamentals', issuer: 'Microsoft', year: '2021', badge: './assets/security.png' }
 ];
 
 // ---------------------------------------------------------------------------
@@ -209,7 +209,7 @@ function renderSkillsContent() {
   
   const certsHtml = certifications.map(c => `
     <div class="cert-badge">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+      <img src="${c.badge}" alt="${c.issuer} certification badge" class="cert-icon-img" loading="lazy">
       <div>
         <p class="cert-name">${c.name}</p>
         <p class="cert-issuer">${c.issuer} &middot; ${c.year}</p>

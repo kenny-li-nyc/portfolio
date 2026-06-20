@@ -94,7 +94,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
 /* Certifications */
 .cert-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 0.75rem; }
 .cert-badge { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); }
-.cert-badge svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+.cert-icon-img { width: 40px; height: 40px; flex-shrink: 0; object-fit: contain; margin-top: 2px; }
 .cert-name { font-size:12.5px; font-weight:500; margin:0; color:var(--text-primary); }
 .cert-issuer { font-size:11px; margin:0; color:var(--text-muted); }
 
