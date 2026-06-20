@@ -209,7 +209,7 @@ function renderSkillsContent() {
   
   const certsHtml = certifications.map(c => `
     <div class="cert-badge">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l3 6 6 1-4.5 4.5L17.5 20 12 17l-5.5 3 1-6.5L3 9l6-1z"/></svg>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
       <div>
         <p class="cert-name">${c.name}</p>
         <p class="cert-issuer">${c.issuer} &middot; ${c.year}</p>
